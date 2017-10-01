@@ -30,10 +30,15 @@ const (
 	LOCATION      = "LOCATION: "
 )
 
+// set scan source port
+func (w *Wemo) SetSourcePort(sourcePort uint16) {
+	w.sourcePort = sourcePort
+}
+
 // scan the multicast
 func (w *Wemo) scan(urn string, timeout time.Duration) ([]*url.URL, error) {
 	// open a udp port for us to receive multicast messages
-	udpAddr, err := net.ResolveUDPAddr("udp4", fmt.Sprintf("%s:0", w.ipAddr))
+	udpAddr, err := net.ResolveUDPAddr("udp4", fmt.Sprintf("%s:%d", w.ipAddr, w.sourcePort))
 	if err != nil {
 		return nil, err
 	}

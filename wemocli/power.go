@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/codegangsta/cli"
-	"github.com/danward79/go.wemo"
+	"github.com/liv2/go.wemo"
 )
 
 var onCommand = cli.Command{

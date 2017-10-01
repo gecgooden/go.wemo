@@ -25,7 +25,7 @@ var ipAddrRE = regexp.MustCompile(`^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/\d{1,3}
 
 // NewByIP ...
 func NewByIP(ipAddr string) *Wemo {
-	return &Wemo{ipAddr: ipAddr, Debug: false}
+	return &Wemo{ipAddr: ipAddr, sourcePort: 0, Debug: false}
 }
 
 // NewByInterface find the ip address associated with the specified interface

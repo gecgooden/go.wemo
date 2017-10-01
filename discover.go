@@ -39,6 +39,7 @@ var (
 // Wemo ...
 type Wemo struct {
 	ipAddr string
+	sourcePort uint16
 	Debug  bool
 }
 
