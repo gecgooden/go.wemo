@@ -22,7 +22,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/danward79/go.wemo"
+	"github.com/jdfergason/go.wemo"
 	"time"
 )
 
@@ -42,7 +42,7 @@ package main
 
 import (
   "fmt"
-  "github.com/danward79/go.wemo"
+  "github.com/jdfergason/go.wemo"
 )
 
 func main() {
@@ -70,7 +70,7 @@ As a convenience method, you can control lights through a more generic interface
 package main
 
 import (
-  "github.com/danward79/go.wemo"
+  "github.com/jdfergason/go.wemo"
   "time"
 )
 
