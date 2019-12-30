@@ -28,7 +28,7 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/savaki/httpctx"
+	"golang.org/x/net/context/ctxhttp"
 )
 
 // Device struct
@@ -79,12 +79,17 @@ func (d *Device) FetchDeviceInfo(ctx context.Context) (*DeviceInfo, error) {
 	var data []byte
 
 	uri := fmt.Sprintf("http://%s/setup.xml", d.Host)
-	err := httpctx.NewClient().Get(ctx, uri, nil, &data)
+	resp, err := ctxhttp.Get(ctx, nil, uri)
 	if err != nil {
 		return nil, err
 	}
 
-	deviceInfo, err := unmarshalDeviceInfo(data)
+	defer resp.Body.Close()
+ 	body, err := ioutil.ReadAll(resp.Body)
+ 	if err != nil {
+ 		return nil, err
+ 	}
+ 	deviceInfo, err := unmarshalDeviceInfo(body)
 	if err != nil {
 		return nil, err
 	}
