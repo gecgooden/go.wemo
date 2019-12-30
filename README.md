@@ -11,6 +11,7 @@ This package supports, Belkin Wemo:
 - Bridge & Bulbs
 - Sockets
 - Insight
+- Switches & Dimmers
 
 This package also includes a subscription to device events and adds basic device discovery.
 
