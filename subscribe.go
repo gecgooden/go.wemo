@@ -19,6 +19,7 @@ import (
 	"html"
 	"io/ioutil"
 	"log"
+	"net"
 	"net/http"
 	"time"
 
@@ -55,9 +56,10 @@ type SubscriptionEvent struct {
 }
 
 //Listener Listen for incomming subscribed state changes.
-func Listener(listenerAddress string, cs chan SubscriptionEvent) {
+func Listener(listenerAddress net.Listener, cs chan SubscriptionEvent) {
 
-	log.Println("Listening... ", listenerAddress)
+	log.Printf("Listening on %s:%d ", listenerAddress.Addr().(*net.TCPAddr).IP.String(),
+		listenerAddress.Addr().(*net.TCPAddr).Port)
 
 	http.HandleFunc("/listener", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
@@ -70,7 +72,7 @@ func Listener(listenerAddress string, cs chan SubscriptionEvent) {
 		}
 	})
 
-	err := http.ListenAndServe(listenerAddress, nil)
+	err := http.Serve(listenerAddress, nil)
 	if err != nil {
 		log.Println("From Listen and Serve Err! ", err)
 	}
