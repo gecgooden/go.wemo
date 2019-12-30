@@ -82,7 +82,7 @@ func main() {
 }
 ```
 
-###Example - Managing Subscriptions
+### Example - Managing Subscriptions
 
 This is an example of discovering devices, subscribing to there events and being notified of changed to there state. Resubscriptions are managed automatically at the timeout specified. Subscriber details and state are maintained in a map.
 
