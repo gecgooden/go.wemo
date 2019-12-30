@@ -8,7 +8,7 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/liv2/go.wemo"
-	"golang.org/x/net/context"
+	"context"
 )
 
 var discoverCommand = cli.Command{

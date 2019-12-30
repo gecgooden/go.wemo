@@ -18,7 +18,7 @@ package wemo
 import (
 	"time"
 
-	"golang.org/x/net/context"
+	"context"
 )
 
 func (w *Wemo) foreach(friendlyName string, timeout time.Duration, callback func(*Device)) error {

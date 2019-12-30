@@ -26,7 +26,7 @@ import (
 	"strconv"
 	"strings"
 
-	"golang.org/x/net/context"
+	"context"
 
 	"golang.org/x/net/context/ctxhttp"
 )
@@ -76,8 +76,6 @@ func unmarshalDeviceInfo(data []byte) (*DeviceInfo, error) {
 
 // FetchDeviceInfo from device
 func (d *Device) FetchDeviceInfo(ctx context.Context) (*DeviceInfo, error) {
-	var data []byte
-
 	uri := fmt.Sprintf("http://%s/setup.xml", d.Host)
 	resp, err := ctxhttp.Get(ctx, nil, uri)
 	if err != nil {
@@ -85,11 +83,11 @@ func (d *Device) FetchDeviceInfo(ctx context.Context) (*DeviceInfo, error) {
 	}
 
 	defer resp.Body.Close()
- 	body, err := ioutil.ReadAll(resp.Body)
- 	if err != nil {
- 		return nil, err
- 	}
- 	deviceInfo, err := unmarshalDeviceInfo(body)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	deviceInfo, err := unmarshalDeviceInfo(body)
 	if err != nil {
 		return nil, err
 	}
