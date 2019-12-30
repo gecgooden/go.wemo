@@ -84,7 +84,7 @@ func main() {
 
 ### Example - Managing Subscriptions
 
-This is an example of discovering devices, subscribing to their events and being notified of changed to their state. Resubscriptions are managed automatically at the timeout specified. Subscriber details and state are maintained in a map.
+This is an example of discovering devices, subscribing to their events and being notified of changes to their state. Resubscriptions are managed automatically at the timeout specified. Subscriber details and state are maintained in a map.
 
 ```go
 package main
