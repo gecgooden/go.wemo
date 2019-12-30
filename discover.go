@@ -25,6 +25,7 @@ const (
 	Basic      = "urn:Belkin:service:basicevent:1"
 	Bridge     = "urn:Belkin:device:bridge:1"
 	Controllee = "urn:Belkin:device:controllee:1"
+	Dimmer     = "urn:Belkin:device:dimmer:1"
 	Light      = "urn:Belkin:device:light:1"
 	Sensor     = "urn:Belkin:device:sensor:1"
 	NetCam     = "urn:Belkin:device:netcam:1"
