@@ -39,14 +39,14 @@ var (
 
 // Wemo ...
 type Wemo struct {
-	ipAddr string
+	ipAddr     string
 	sourcePort uint16
-	Debug  bool
+	Debug      bool
 }
 
 // DiscoverAll ...
 func (w *Wemo) DiscoverAll(timeout time.Duration) ([]*Device, error) {
-	urns := []string{Basic, Bridge, Controllee, Light, Sensor, NetCam, Insight}
+	urns := []string{Basic, Bridge, Controllee, Dimmer, Light, Sensor, NetCam, Insight}
 	var all []*Device
 	for _, urn := range urns {
 		devices, _ := w.Discover(urn, timeout)
