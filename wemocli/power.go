@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/codegangsta/cli"
-	".."
+	"github.com/gecgooden/go.wemo"
+	"github.com/urfave/cli"
 )
 
 var onCommand = cli.Command{
