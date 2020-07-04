@@ -185,28 +185,31 @@ func (d *Device) changeState(newState bool) error {
 
 // InsightParams ...
 type InsightParams struct {
-	Power int // mW
+	OnFor          int     // seconds
+	OnToday        int     // seconds
+	OnTotal        int     // seconds
+	WifiStrength   float64 // RSSI strength
+	CurrentPower   float64 // mW
+	TodayPower     float64 // mW
+	TotalPower     float64 // mW
+	PowerThreshold float64 // mW
 }
 
-// GetInsightParams ...
-func (d *Device) GetInsightParams() *InsightParams {
+func (d *Device) GetInsightParams() (insightParams *InsightParams, err error) {
 	message := newGetInsightParamsMessage()
 	response, err := post(d.Host, "insight", "GetInsightParams", message)
 	if err != nil {
-		d.printf("unable to fetch Power => %s\n", err)
-		return nil
+		return nil, fmt.Errorf("Unable to fetch Insight Data from %s:\n\t%v", d.Host, err)
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusOK {
-		d.printf("GetInsightParams returned status code => %d\n", response.StatusCode)
-		return nil
+		return nil, fmt.Errorf("Insight returned a non-ok status code (%d)", response.StatusCode)
 	}
 
-	data, err := ioutil.ReadAll(response.Body)
+	rawData, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		d.printf("unable to read data => %s\n", err)
-		return nil
+		return nil, fmt.Errorf("Unable to read Insight Data:\n\t%s", err)
 	}
 
 	// <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><s:Body>
@@ -215,23 +218,67 @@ func (d *Device) GetInsightParams() *InsightParams {
 	// </u:GetInsightParamsResponse>
 
 	re := regexp.MustCompile(`.*<InsightParams>(.+)</InsightParams>.*`)
-	matches := re.FindStringSubmatch(string(data))
+	data := string(rawData)
+	matches := re.FindStringSubmatch(data)
 	if len(matches) != 2 {
-		d.printf("unable to find GetInsightParams response in message => %s\n", string(data))
-		return nil
+		return nil, fmt.Errorf("Unable to find InsightParams response in message:\n\t%s", data)
 	}
+
 	split := strings.Split(matches[1], "|")
-	if len(split) < 7 {
-		d.printf("unable to parse InsightParams response => %s\n", string(data))
-		return nil
+	if len(split) != 11 {
+		return nil, fmt.Errorf("Unable to parse InsightParams response in message:\n\t%s", data)
 	}
-	power, err := strconv.Atoi(split[7])
+
+	onFor, err := strconv.Atoi(split[2])
 	if err != nil {
-		d.printf("failed to parse power: %v", err)
+		return nil, fmt.Errorf("Failed to parse OnFor in InsightParams:\n\t%s", err)
 	}
+
+	onToday, err := strconv.Atoi(split[4])
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse OnToday in InsightParams:\n\t%s", err)
+	}
+
+	onTotal, err := strconv.Atoi(split[4])
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse OnTotal in InsightParams:\n\t%s", err)
+	}
+
+	wifiStrength, err := strconv.ParseFloat(split[6], 64)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse Wifi Strength in InsightParams:\n\t%s", err)
+	}
+
+	currentPower, err := strconv.ParseFloat(split[7], 64)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse Current Power in InsightParams:\n\t%s", err)
+	}
+
+	todayPower, err := strconv.ParseFloat(split[8], 64)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse Todays Power in InsightParams:\n\t%s", err)
+	}
+
+	totalPower, err := strconv.ParseFloat(split[9], 64)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse Total Power in InsightParams:\n\t%s", err)
+	}
+
+	powerThreshold, err := strconv.ParseFloat(split[10], 64)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to parse Power Threshold in InsightParams:\n\t%s", err)
+	}
+
 	return &InsightParams{
-		Power: power,
-	}
+		OnFor:          onFor,
+		OnToday:        onToday,
+		OnTotal:        onTotal,
+		WifiStrength:   wifiStrength,
+		CurrentPower:   currentPower,
+		TodayPower:     todayPower,
+		TotalPower:     totalPower,
+		PowerThreshold: powerThreshold,
+	}, nil
 }
 
 // EndDevices ...
