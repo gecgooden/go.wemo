@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"sort"
@@ -8,7 +9,6 @@ import (
 
 	"github.com/gecgooden/go.wemo"
 	"github.com/urfave/cli"
-	"context"
 )
 
 var discoverCommand = cli.Command{

@@ -33,6 +33,8 @@ func main() {
 		toggleCommand,
 		bulbCommand,
 		bulbStatusCommand,
+		insightCommand,
+		statusCommand,
 	}
 	app.Run(os.Args)
 }
