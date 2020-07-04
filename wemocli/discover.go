@@ -6,8 +6,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/codegangsta/cli"
-	"github.com/liv2/go.wemo"
+	"github.com/gecgooden/go.wemo"
+	"github.com/urfave/cli"
 	"context"
 )
 
